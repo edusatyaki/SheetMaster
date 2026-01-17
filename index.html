@@ -5569,6 +5569,7 @@
             const readFuncs = await getReadFunctions();
 
             // Render Table Rows
+            // Render Table Rows
             functions.forEach((f, index) => {
                 const tr = document.createElement('tr');
                 tr.className = 'func-row';
@@ -5592,8 +5593,7 @@
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                         </button>
-                    </td>
-                `;
+                    </td>`;
                 tbody.appendChild(tr);
             });
 
@@ -5677,11 +5677,18 @@
         function createGrid(dataObj) {
             gridContainer.innerHTML = '';
 
-            // Determine needed columns based on explicit keys and target cell
+
             const colsSet = new Set();
+            const ignoreKeys = ['target', 'formula', 'result', 'highlight', 'steps'];
+
             Object.keys(dataObj).forEach(key => {
-                const col = key[0];
-                colsSet.add(col);
+                if (!ignoreKeys.includes(key)) {
+                    // Assume strictly A-Z column notation
+                    const colMatch = key.match(/^[A-Z]+/);
+                    if (colMatch) {
+                        colsSet.add(colMatch[0]);
+                    }
+                }
             });
             // Ensure at least A-D for basic layout
             ['A', 'B', 'C', 'D'].forEach(c => colsSet.add(c));
@@ -5689,6 +5696,7 @@
 
             // Generate Headers (first empty cell then column letters)
             const headers = [' ', ...cols];
+
             headers.forEach(h => {
                 const div = document.createElement('div');
                 div.className = 'cell cell-header';
@@ -5816,7 +5824,7 @@
 
     <!-- Fixed Footer -->
     <footer class="fixed-footer">
-        <p>Ideation & development <span class="creator-name">Satyaki Das</span> | Innovation in Education v2.0.0</p>
+        <p>Ideation & development <span class="creator-name">Satyaki Das</span> | Innovation in Education v_03.0.0</p>
     </footer>
 </body>
 
